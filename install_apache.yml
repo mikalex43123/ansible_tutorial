@@ -9,15 +9,11 @@
       update_cache: yes
     when: ansible_distribution == ["Debian", "Ubuntu"]
 
-  - name: install apache2 package
+  - name: install apache2 and php package for (Ubuntu)
     apt:
-      name: apache2
-      state: latest
-    when: ansible_distribution == ["Debian", "Ubuntu"]
-
-  - name: add php support for apache2
-    apt:
-      name: libapache2-mod-php
+      name:
+        - apache2
+        - libapache2-nox-php
       state: latest
     when: ansible_distribution == ["Debian", "Ubuntu"]
 
@@ -26,14 +22,12 @@
       update_cache: yes
     when: ansible_distribution == "CentOS" 
 
-  - name: install apache2 package
+  - name: install apache2 and php package for (CentOS)
     dnf:
-      name: httpd
+      name:
+        - httpd
+        - php
       state: latest
     when: ansible_distribution == "CentOS"
 
-  - name: add php support for apache2
-    dnf:
-      name: php
-      state: latest
-    when: ansible_distribution == "CentOS"
+ 
