@@ -1,0 +1,41 @@
+- name: install apache and php for Ubuntu servers
+  tags: apache,apache2,ubuntu
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: install apache and php for CentOS servers
+  tags: apache,httpd,centos
+  dnf:
+    name:
+      - httpd
+      - php
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: start httpd (CentOS)
+  tags: apache,httpd,centos
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  when: ansible_distribution == "CentOS"
+
+- name: change e-mail address for admin
+  tags: apache,httpd,centos
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^ServerAdmin'
+    line: ServerAdmin sombody@somewhere.net
+  when: ansible_distribution == "CentOS"
+  register: pizza
+
+- name: restart httpd only (CentOS)
+  tags: apache,httpd,centos
+  service:
+    name: httpd
+    state: restarted
+  when: pizza.changed
