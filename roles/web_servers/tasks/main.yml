@@ -9,7 +9,8 @@
 - name : start and enable apache service
   tags: apache,httpd,apache2
   service:
-    name: "{{ apache_service }}"
+    name: 
+      - "{{ apache_service }}"
     state: started
     enabled: yes
 
